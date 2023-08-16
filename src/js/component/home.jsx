@@ -23,7 +23,9 @@ const Home = () => {
 		setLista(arr)
 		agregar(arr)
 		
+		
 	}
+	
 	function handleAgregar(e) {
 		e.preventDefault()
 		const nuevaTarea = {
@@ -31,9 +33,10 @@ const Home = () => {
 			label: addTarea
 
 		}
+		agregar([...lista, nuevaTarea])
 		setLista([...lista, nuevaTarea])
 		setaddTarea("")
-		agregar([...lista, nuevaTarea])
+		
 		
 	}
 	 async function agregar(lista) {
@@ -68,27 +71,22 @@ const Home = () => {
 		}
 	}
 	
-	async function eliminar1() {
+	async function eliminarTodo() {
 		try {
 		const response= await fetch('https://playground.4geeks.com/apis/fake/todos/user/agustin2',{
 			method:'DELETE',
 			headers: {
 				"Content-Type": "application/json"
+				
 			  },
 
 		})
-		let data = await response.json()
-		console.log(data);
-		// setLista([])
-		crearUsuario()
-
-	} catch (error) {
-		console.log(error);
+		const data= await response.json()
+		setLista([])
 		
-		
-	}
 
-
+		} catch (error) {
+		console.log(error);}
 		
 	}
 
@@ -97,7 +95,7 @@ const Home = () => {
 			let response = await fetch('https://playground.4geeks.com/apis/fake/todos/user/agustin2')//especificamos la url donde vamos a buscar info
 			let data = await response.json()
 			setLista(data);
-			console.log(data);
+			
 	
 		} catch (error) {
 			console.log(error);
@@ -108,16 +106,13 @@ const Home = () => {
 
 
 	// useEffect(funcion anonima,array vacio)
-	 useEffect(function () {// onload => ejecutar codigo ni bien cargue el componente
-	//bloque de codigo que queremos ejecutar
+	 useEffect(function () {
 
 		crearUsuario()
 		obtenerTareas()
 	 },[])
-	 function borrarTodo() {
-		setLista([])
-		
-	 }
+	
+	
 
 
 	return (
@@ -160,12 +155,13 @@ const Home = () => {
 					
 					{lista.length === 0 ? "No hay tareas pendientes, agregar tarea" : lista.length + "items restantes"}
 					</div>
-					<button onClick={eliminar1}>click here</button>
+					
 										
 
 				</div>
 
 			</form>
+			<button onClick={eliminarTodo} className="btn btn-outline-danger">Eliminar todas las tareas</button>
 		</div>
 		</div>
 	);
